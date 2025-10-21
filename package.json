@@ -25,6 +25,8 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
     "docker:restart": "docker-compose restart",
+    "docker:clean": "docker-compose down && docker system prune -f && docker volume prune -f",
+    "docker:reset": "npm run docker:clean && npm run docker:up && sleep 10 && npm run setup",
     "setup": "npm run prisma:generate && npm run prisma:push",
     "clean": "rm -rf dist coverage node_modules/.cache",
     "prebuild": "npm run clean && npm run prisma:generate",

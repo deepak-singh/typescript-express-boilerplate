@@ -3,26 +3,22 @@ version: '3.8'
 services:
   mongodb:
     image: mongo:7.0
-    container_name: event-forge-mongodb
+    container_name: typescript-express-boilerplate-mongodb
     ports:
       - "27017:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password123
-      - MONGO_INITDB_DATABASE=event-forge
+      - MONGO_INITDB_DATABASE=typescript-express-boilerplate
     volumes:
       - mongodb_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - ./mongo-config.js:/docker-entrypoint-initdb.d/mongo-config.js:ro
-      - ./mongodb-keyfile:/etc/mongodb-keyfile:ro
     restart: unless-stopped
     networks:
-      - event-forge-network
-    command: mongod --auth --replSet rs0 --keyFile /etc/mongodb-keyfile
+      - typescript-express-boilerplate-network
 
   mongo-express:
     image: mongo-express:1.0.0
-    container_name: event-forge-mongo-express
+    container_name: typescript-express-boilerplate-mongo-express
     ports:
       - "8081:8081"
     environment:
@@ -36,11 +32,11 @@ services:
       - mongodb
     restart: unless-stopped
     networks:
-      - event-forge-network
+      - typescript-express-boilerplate-network
 
 volumes:
   mongodb_data:
 
 networks:
-  event-forge-network:
+  typescript-express-boilerplate-network:
     driver: bridge

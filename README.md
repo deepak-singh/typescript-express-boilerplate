@@ -130,11 +130,11 @@ src/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js >= 20.0.0
-- npm >= 10.0.0
-- Docker and Docker Compose
+- **Node.js** >= 20.0.0
+- **npm** >= 10.0.0  
+- **Docker** and **Docker Compose** (for database)
 
-### ⚡ 3-Step Setup
+### ⚡ Quick Start (3 Steps)
 
 1. **Clone and Install**
    ```bash
@@ -154,14 +154,14 @@ src/
    # Start MongoDB with Docker
    npm run docker:up
    
-   # Setup database
+   # Setup database schema
    npm run setup
    
    # Start development server
    npm run dev
    ```
 
-🎉 **You're ready!** The API is running at `http://localhost:3000`
+🎉 **That's it!** Your API will be running at `http://localhost:3000`
 
 ## 🧪 Test the API
 
@@ -237,13 +237,29 @@ PORT=3000
 NODE_ENV=development
 ```
 
-## 🐳 Docker Commands
+## 🐳 Docker Setup
 
+### First Time Setup
+```bash
+# 1. Start MongoDB and Mongo Express
+npm run docker:up
+
+# 2. Wait for MongoDB to be ready (10-15 seconds)
+sleep 10
+
+# 3. Setup database schema
+npm run setup
+
+# 4. Start your application
+npm run dev
+```
+
+### Docker Commands
 ```bash
 # Start all services
 npm run docker:up
 
-# Stop all services
+# Stop all services  
 npm run docker:down
 
 # View logs
@@ -251,46 +267,122 @@ npm run docker:logs
 
 # Restart services
 npm run docker:restart
+
+# Clean up everything (when stuck)
+npm run docker:clean
+
+# Complete reset (when nothing works)
+npm run docker:reset
+
+# Check container status
+docker ps
 ```
+
+### What's Running
+- **MongoDB**: `localhost:27017` (database)
+- **Mongo Express**: `localhost:8081` (web interface)
+- **Your API**: `localhost:3000` (after `npm run dev`)
+
+### Expected Output
+When you run `npm run docker:up`, you should see:
+```bash
+Creating network "typescript-express-boilerplate_typescript-express-boilerplate-network" with driver "bridge"
+Creating volume "typescript-express-boilerplate_mongodb_data" with default driver
+Creating typescript-express-boilerplate-mongodb ... done
+Creating typescript-express-boilerplate-mongo-express ... done
+```
+
+✅ **Success indicators:**
+- No error messages
+- Both containers created successfully
+- You can access Mongo Express at `http://localhost:8081`
 
 ## 🚨 Troubleshooting
 
-### Common Issues
+### Docker Issues
 
-**1. Port 3000 already in use**
+**1. "Container name already in use"**
 ```bash
-# Kill process using port 3000
-lsof -ti:3000 | xargs kill -9
-```
-
-**2. MongoDB connection failed**
-```bash
-# Restart Docker services
+# Stop and remove existing containers
 npm run docker:down
+docker system prune -f
 npm run docker:up
 ```
 
-**3. Prisma client not found**
+**2. "Cannot connect to MongoDB"**
+```bash
+# Check if MongoDB is running
+docker ps | grep typescript-express-boilerplate-mongodb
+
+# Restart MongoDB
+npm run docker:down
+npm run docker:up
+
+# Wait 10 seconds for MongoDB to fully start
+sleep 10
+npm run setup
+```
+
+**3. "MongoDB authentication failed"**
+```bash
+# Reset MongoDB data (⚠️ This will delete all data)
+npm run docker:down
+docker volume rm typescript-express-boilerplate_mongodb_data
+npm run docker:up
+npm run setup
+```
+
+**4. "Port 27017 already in use"**
+```bash
+# Find what's using the port
+lsof -i :27017
+
+# Stop any existing MongoDB containers
+docker ps | grep mongo
+docker stop $(docker ps -q --filter ancestor=mongo)
+docker rm $(docker ps -aq --filter ancestor=mongo)
+
+# Or stop our specific containers
+docker stop typescript-express-boilerplate-mongodb typescript-express-boilerplate-mongo-express
+docker rm typescript-express-boilerplate-mongodb typescript-express-boilerplate-mongo-express
+
+# Or use a different port
+# Edit docker-compose.yml to use port 27018:27017
+```
+
+### Application Issues
+
+**5. "Port 3000 already in use"**
+```bash
+# Kill process on port 3000
+lsof -ti:3000 | xargs kill -9
+# Or use a different port: PORT=3001 npm run dev
+```
+
+**6. "Prisma client not found"**
 ```bash
 npm run prisma:generate
 ```
 
-**4. User creation failed**
+**7. "User creation failed"**
 ```bash
 # Reset database and try again
 npm run prisma:reset
 npm run prisma:push
 ```
 
-### Reset Everything
+### Nuclear Reset (Everything)
 ```bash
-# Nuclear option - reset everything
+# Complete reset - use when nothing else works
 npm run docker:down
-npm run clean
+docker system prune -f
+docker volume prune -f
 rm -rf node_modules
 npm install
 npm run docker:up
+sleep 10  # Wait for MongoDB
 npm run setup
+npm run dev
 ```
 
 ## 📚 API Documentation
