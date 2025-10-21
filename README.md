@@ -35,47 +35,47 @@ A production-ready, modern TypeScript Express.js boilerplate with Prisma ORM, Mo
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    HTTP Layer (Routes)                        │
-│  • URL mapping and routing                                     │
-│  • Middleware application (auth, validation, rate limiting)    │
-│  • Route organization and grouping                            │
-│  • Direct HTTP request/response handling                       │
+│                    HTTP Layer (Routes)                          │
+│  • URL mapping and routing                                      │
+│  • Middleware application (auth, validation, rate limiting)     │
+│  • Route organization and grouping                              │
+│  • Direct HTTP request/response handling                        │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                 Service Layer (Business Logic)                 │
-│  • Business rules and validation                               │
-│  • Data transformation and processing                         │
-│  • External integrations (APIs, email, etc.)                  │
-│  • Orchestration of multiple repositories                     │
-│  • Complex operations and workflows                           │
+│                 Service Layer (Business Logic)                  │
+│  • Business rules and validation                                │
+│  • Data transformation and processing                           │
+│  • External integrations (APIs, email, etc.)                    │
+│  • Orchestration of multiple repositories                       │
+│  • Complex operations and workflows                             │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│              Repository Layer (Data Access)                    │
-│  • Pure database operations (CRUD)                             │
-│  • Query mapping and data transformation                      │
-│  • Prisma query execution                                      │
-│  • No business logic, just data access                         │
+│              Repository Layer (Data Access)                     │
+│  • Pure database operations (CRUD)                              │
+│  • Query mapping and data transformation                        │
+│  • Prisma query execution                                       │
+│  • No business logic, just data access                          │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                 Model Layer (Type Definitions)                 │
-│  • Type definitions and interfaces                             │
-│  • Data structure definitions                                  │
-│  • Pure TypeScript types                                       │
-│  • No business logic, just types                               │
+│                 Model Layer (Type Definitions)                  │
+│  • Type definitions and interfaces                              │
+│  • Data structure definitions                                   │
+│  • Pure TypeScript types                                        │
+│  • No business logic, just types                                │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                 Database Layer (Prisma + MongoDB)              │
-│  • Type-safe database operations                               │
-│  • Connection management                                       │
-│  • Query optimization and caching                             │
+│                 Database Layer (Prisma + MongoDB)               │
+│  • Type-safe database operations                                │
+│  • Connection management                                        │
+│  • Query optimization and caching                               │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
