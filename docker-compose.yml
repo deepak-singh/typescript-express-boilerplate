@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: event-forge-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=event-forge
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./mongo-config.js:/docker-entrypoint-initdb.d/mongo-config.js:ro
+      - ./mongodb-keyfile:/etc/mongodb-keyfile:ro
+    restart: unless-stopped
+    networks:
+      - event-forge-network
+    command: mongod --auth --replSet rs0 --keyFile /etc/mongodb-keyfile
+
+  mongo-express:
+    image: mongo-express:1.0.0
+    container_name: event-forge-mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password123
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - event-forge-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  event-forge-network:
+    driver: bridge
