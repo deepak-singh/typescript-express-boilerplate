@@ -3,7 +3,7 @@ import { UserService } from '@/services/userService';
 import {
   validateBody,
   validateQuery,
-  validateMongoId,
+  validateUuid,
 } from '@/validation/middleware';
 import {
   createUserSchema,
@@ -53,7 +53,7 @@ router.get(
 
 router.get(
   '/:id',
-  validateMongoId('id'),
+  validateUuid('id'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -131,7 +131,7 @@ router.put(
     }
     return authenticateToken(req, res, next);
   },
-  validateMongoId('id'),
+  validateUuid('id'),
   validateBody(updateUserSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -180,7 +180,7 @@ router.delete(
     }
     return authenticateToken(req, res, next);
   },
-  validateMongoId('id'),
+  validateUuid('id'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

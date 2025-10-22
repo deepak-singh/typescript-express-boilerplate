@@ -15,9 +15,9 @@ A production-ready, modern TypeScript Express.js boilerplate with Prisma ORM, Mo
 - **Helmet** security headers
 
 ### 🗄️ Database & ORM
-- **Prisma ORM** with MongoDB
+- **Prisma ORM** with PostgreSQL
 - **Type-safe database operations**
-- **MongoDB replica set** support
+- **PostgreSQL** with full ACID compliance
 - **Database migrations** with Prisma
 - **Connection pooling**
 
@@ -72,7 +72,7 @@ A production-ready, modern TypeScript Express.js boilerplate with Prisma ORM, Mo
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                 Database Layer (Prisma + MongoDB)               │
+│                 Database Layer (Prisma + PostgreSQL)            │
 │  • Type-safe database operations                                │
 │  • Connection management                                        │
 │  • Query optimization and caching                               │
@@ -87,7 +87,7 @@ A production-ready, modern TypeScript Express.js boilerplate with Prisma ORM, Mo
 | **Services** | Business logic, orchestration | Business rules, data processing, integrations |
 | **Repositories** | Data access abstraction | Database queries, data mapping |
 | **Models** | Pure data structures | Type definitions, interfaces |
-| **Database** | Data persistence | Prisma, MongoDB, connections |
+| **Database** | Data persistence | Prisma, PostgreSQL, connections |
 
 ## 📁 Project Structure
 
@@ -279,23 +279,23 @@ docker ps
 ```
 
 ### What's Running
-- **MongoDB**: `localhost:27017` (database)
-- **Mongo Express**: `localhost:8081` (web interface)
+- **PostgreSQL**: `localhost:5432` (database)
+- **pgAdmin**: `localhost:8081` (web interface)
 - **Your API**: `localhost:3000` (after `npm run dev`)
 
 ### Expected Output
 When you run `npm run docker:up`, you should see:
 ```bash
 Creating network "typescript-express-boilerplate_typescript-express-boilerplate-network" with driver "bridge"
-Creating volume "typescript-express-boilerplate_mongodb_data" with default driver
-Creating typescript-express-boilerplate-mongodb ... done
-Creating typescript-express-boilerplate-mongo-express ... done
+Creating volume "typescript-express-boilerplate_postgres_data" with default driver
+Creating typescript-express-boilerplate-postgres ... done
+Creating typescript-express-boilerplate-pgadmin ... done
 ```
 
 ✅ **Success indicators:**
 - No error messages
 - Both containers created successfully
-- You can access Mongo Express at `http://localhost:8081`
+- You can access pgAdmin at `http://localhost:8081`
 
 ## 🚨 Troubleshooting
 
@@ -309,45 +309,45 @@ docker system prune -f
 npm run docker:up
 ```
 
-**2. "Cannot connect to MongoDB"**
+**2. "Cannot connect to PostgreSQL"**
 ```bash
-# Check if MongoDB is running
-docker ps | grep typescript-express-boilerplate-mongodb
+# Check if PostgreSQL is running
+docker ps | grep typescript-express-boilerplate-postgres
 
-# Restart MongoDB
+# Restart PostgreSQL
 npm run docker:down
 npm run docker:up
 
-# Wait 10 seconds for MongoDB to fully start
+# Wait 10 seconds for PostgreSQL to fully start
 sleep 10
 npm run setup
 ```
 
-**3. "MongoDB authentication failed"**
+**3. "PostgreSQL authentication failed"**
 ```bash
-# Reset MongoDB data (⚠️ This will delete all data)
+# Reset PostgreSQL data (⚠️ This will delete all data)
 npm run docker:down
-docker volume rm typescript-express-boilerplate_mongodb_data
+docker volume rm typescript-express-boilerplate_postgres_data
 npm run docker:up
 npm run setup
 ```
 
-**4. "Port 27017 already in use"**
+**4. "Port 5432 already in use"**
 ```bash
 # Find what's using the port
-lsof -i :27017
+lsof -i :5432
 
-# Stop any existing MongoDB containers
-docker ps | grep mongo
-docker stop $(docker ps -q --filter ancestor=mongo)
-docker rm $(docker ps -aq --filter ancestor=mongo)
+# Stop any existing PostgreSQL containers
+docker ps | grep postgres
+docker stop $(docker ps -q --filter ancestor=postgres)
+docker rm $(docker ps -aq --filter ancestor=postgres)
 
 # Or stop our specific containers
-docker stop typescript-express-boilerplate-mongodb typescript-express-boilerplate-mongo-express
-docker rm typescript-express-boilerplate-mongodb typescript-express-boilerplate-mongo-express
+docker stop typescript-express-boilerplate-postgres typescript-express-boilerplate-pgadmin
+docker rm typescript-express-boilerplate-postgres typescript-express-boilerplate-pgadmin
 
 # Or use a different port
-# Edit docker-compose.yml to use port 27018:27017
+# Edit docker-compose.yml to use port 5433:5432
 ```
 
 ### Application Issues

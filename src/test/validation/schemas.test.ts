@@ -1,5 +1,5 @@
 import {
-  mongoIdSchema,
+  uuidSchema,
   emailSchema,
   passwordSchema,
   nameSchema,
@@ -13,32 +13,31 @@ import {
 } from '@/validation/schemas';
 
 describe('Validation Schemas', () => {
-  describe('mongoIdSchema', () => {
-    it('should validate valid MongoDB ObjectId', () => {
-      const validIds = [
-        '507f1f77bcf86cd799439011',
-        '507f191e810c19729de860ea',
-        '000000000000000000000000',
-        'ffffffffffffffffffffffff',
+  describe('uuidSchema', () => {
+    it('should validate valid UUID', () => {
+      const validUuids = [
+        '550e8400-e29b-41d4-a716-446655440000',
+        '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+        '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
       ];
 
-      validIds.forEach(id => {
-        expect(() => mongoIdSchema.parse(id)).not.toThrow();
+      validUuids.forEach(uuid => {
+        expect(() => uuidSchema.parse(uuid)).not.toThrow();
       });
     });
 
-    it('should reject invalid MongoDB ObjectId', () => {
-      const invalidIds = [
-        'invalid-id',
-        '507f1f77bcf86cd79943901', // too short
-        '507f1f77bcf86cd7994390111', // too long
-        '507f1f77bcf86cd79943901g', // invalid character
+    it('should reject invalid UUID', () => {
+      const invalidUuids = [
+        'invalid-uuid',
+        '550e8400-e29b-41d4-a716', // too short
+        '550e8400-e29b-41d4-a716-446655440000-extra', // too long
+        '550e8400-e29b-41d4-a716-44665544000g', // invalid character
         '',
-        'not-a-mongo-id',
+        'not-a-uuid',
       ];
 
-      invalidIds.forEach(id => {
-        expect(() => mongoIdSchema.parse(id)).toThrow();
+      invalidUuids.forEach(uuid => {
+        expect(() => uuidSchema.parse(uuid)).toThrow();
       });
     });
   });

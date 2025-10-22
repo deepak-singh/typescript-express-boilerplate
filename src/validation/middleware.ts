@@ -74,14 +74,14 @@ export const validateQuery = (schema: ZodSchema) => validate(schema, 'query');
 export const validateParams = (schema: ZodSchema) => validate(schema, 'params');
 
 /**
- * Validate MongoDB ObjectId parameter
+ * Validate UUID parameter
  */
-export const validateMongoId = (paramName: string = 'id') => {
+export const validateUuid = (paramName: string = 'id') => {
   return validateParams(
     z.object({
       [paramName]: z
         .string()
-        .regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoDB ObjectId'),
+        .uuid('Invalid UUID format'),
     })
   );
 };

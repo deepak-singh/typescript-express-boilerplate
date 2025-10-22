@@ -3,9 +3,9 @@ import { z } from 'zod';
 /**
  * Common validation schemas
  */
-export const mongoIdSchema = z
+export const uuidSchema = z
   .string()
-  .regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoDB ObjectId');
+  .uuid('Invalid UUID format');
 
 export const emailSchema = z
   .string()
